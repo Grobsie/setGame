@@ -1,5 +1,5 @@
 const deck = [];
-const hand = [];
+const hand = [[],[],[],[],[],[],[],[],[],[],[],[]];
 const selection = [];
 
 function createDeck() {
@@ -22,32 +22,36 @@ function createDeck() {
 function fillHand() {
     let container = document.getElementById("handPane");
     container.innerHTML = "";
-    for (let i = hand.length; i < 12; i++){
-        let x = Math.floor(Math.random() * deck.length);
-        hand.push(deck[x]);
-        deck.splice(x, 1);
+    console.log(hand[0]);
+    for (let i in hand){
+        if (hand[i].length === 0){
+            let x = Math.floor(Math.random() * deck.length);
+            hand[i] = deck[x];
+            deck.splice(x, 1);
 
-        var cardContainer = document.createElement("div");
-        for (let val = 0; val < hand[i][0];val++){
-            var shape = document.createElement("img");
-            shape.src = "img/"+hand[i][3]+"/"+hand[i][1] + hand[i][2]+".png"
-            shape.innerHTML = hand[i][1] + hand[i][2] + hand[i][3];
-            cardContainer.appendChild(shape);
+            var cardContainer = document.createElement("div");
+            for (let val = 0; val < hand[i][0];val++){
+                var shape = document.createElement("img");
+                shape.src = "img/"+hand[i][3]+"/"+hand[i][1] + hand[i][2]+".png"
+                shape.innerHTML = hand[i][1] + hand[i][2] + hand[i][3];
+                cardContainer.appendChild(shape);
+            }
+            //cardContainer.innerHTML = hand[i];
+            cardContainer.setAttribute("class", "shownCards");
+            cardContainer.setAttribute("id", i);
+            cardContainer.setAttribute("onclick", "addSelection(" + i + ")");
+            container.appendChild(cardContainer);
         }
-        //cardContainer.innerHTML = hand[i];
-        cardContainer.setAttribute("class", "shownCards");
-        cardContainer.setAttribute("id", i);
-        cardContainer.setAttribute("onclick", "addSelection(" + i + ")");
-        container.appendChild(cardContainer);
+
     }	
 }
 
 function shuffle() {
     for (let cardInHand in hand){
         deck.push(hand[cardInHand]);
+        hand[cardInHand] = [];
     }
-    hand.length = 0;
-    fillHand()
+    fillHand();
 }
 
 function addSelection(arrIndex) {
@@ -123,7 +127,7 @@ function combinations(cards) {
 
 function startGame() {
     deck.length = 0;
-    hand.length = 0;
+    //hand.length = 0;
     selection.length = 0;
     createDeck();
     fillHand();

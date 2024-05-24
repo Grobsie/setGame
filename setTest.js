@@ -19,6 +19,7 @@ function combinations(cards, k) {
 }
 
 // Example usage:
-const cards = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
-const setsOfThree = combinations(cards, 3);
-console.log(setsOfThree);
+const cards = [1, 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
+console.log(cards[0]);
+cards[0] = [1,2,3,5];
+console.log(cards[0]);
