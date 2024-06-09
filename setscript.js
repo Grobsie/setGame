@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const selection = [];
 
     function createDeck() {
-        //console.log("running createDeck");
         deck.length = 0;
         selection.length = 0;
         hand = [[],[],[],[],[],[],[],[],[],[],[],[]];
@@ -27,13 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         }
-        //console.log("finished createDeck");
     }
 
-
-
     function fillHand() {
-        //console.log("running fillHand");
         let container = document.getElementById("handPane");
         while (container.firstChild) {
             container.removeChild(container.firstChild);
@@ -44,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 hand[i] = deck[x];
                 deck.splice(x, 1);
             }
-
             var cardContainer = document.createElement("div");
             for (let val = 0; val < hand[i][0];val++){
                 var shape = document.createElement("img");
@@ -53,19 +47,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 shape.setAttribute("id", i);
                 cardContainer.appendChild(shape);
             }
-            //cardContainer.innerHTML = hand[i];
-            //cardContainer.setAttribute("class", "shownCards");
-            //cardContainer.setAttribute("id", i);
-            //cardContainer.setAttribute("onclick", "addSelection(" + i + ")");
             container.appendChild(cardContainer);
-            
         }
         //console.log("finished fillHand");
         document.getElementById("log").innerHTML = "possible combinations: " + combinations(hand);
     }
 
     function shuffle() {
-        //console.log("running Shuffle");
         for (let cardInHand in hand){
             deck.push(hand[cardInHand]);
             hand[cardInHand] = [];
@@ -74,27 +62,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function waitForThreeSelections() {
-        //console.log("running waitForThreeSelections");
-
         return new Promise((resolve) => {
             function buttonClickHandler(event) {
                 if (event.target && event.target.classList.contains('shownCards')) {
                     const buttonId = event.target.getAttribute('id');
-                    if (selection.includes(buttonId) === false) {
-                        selection.push(buttonId);
-                        console.log("adding " + buttonId);                        
+                    const buttonIdParent = event.target.parentNode;
+                    if (selection.includes(hand[buttonId]) === false) {
+                        console.log(selection);
+                        console.log("does not seems to contain" + buttonId);
+                        buttonIdParent.style.border = "1px red solid";
+                        selection.push(hand[buttonId]);
+                        //console.log("adding card " + buttonId + " : " + hand[buttonId]);                        
+                    } else {
+                        buttonIdParent.style.border = "1px white solid";
+                        selection.splice(hand[buttonId], 1);
+                        //console.log("removing " + buttonId + " : " + hand[buttonId]);
                     }
-
+                    console.log(selection);
                     if (selection.length >= 3) {
                         buttonContainer.removeEventListener('click', buttonClickHandler);
-                        console.log("three selections have been made");
+                        //console.log("three selections have been made");
                         resolve(selection);
                     }
                 }
             }
-
             buttonContainer.addEventListener('click', buttonClickHandler);
-            //console.log("finished waitForThreeSelections");
         });
     }
 
@@ -127,28 +119,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function removeSetFromHand(setArray) {
-        //console.log("running removeSetFromHand");
+        console.log("running removeSetFromHand");
         for (let indexOfSetCard in setArray) {
-            hand[setArray[indexOfSetCard]] = [];
-            console.log(hand[setArray[indexOfSetCard]]);
+            hand[hand.indexOf(setArray[indexOfSetCard])] = [];
         }
     }
 
     function isSet(selectedArray) {
         //console.log("running isSet");
         let match = 0;
+        //console.log(selectedArray);
         for (i = 0; i < 4; i++) {
             if (selectedArray[0][i] == selectedArray[1][i] && selectedArray[0][i] == selectedArray[2][i]){
+                //console.log(selectedArray[0][i] + " is equal to " + selectedArray[1][i] + " and " + selectedArray[0][i] + " is equal to " + selectedArray[2][i]);
                 match++;
             } else if (selectedArray[0][i] != selectedArray[1][i] && selectedArray[0][i] != selectedArray[2][i] && selectedArray[1][i] != selectedArray[2][i]) {
+                //console.log(selectedArray[0][i] + " is not equal to " + selectedArray[1][i] +  " and " + selectedArray[0][i] + " is not equal to " + selectedArray[2][i] + " and " + selectedArray[1][i] + " is not equal to " + selectedArray[2][i]);
                 match++;
             }
         }
         return (match === 4);
+        //for testing purposes every selection is a match
+        //return true;
     }
 
     function combinations(cards) {
-        //console.log("running combinations");
         const results = [];
         let possiblecombinations = 0;
         
@@ -188,6 +183,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log(hand);
             } else {
                 console.log("Oh no it is not a set :(");
+            }
+
+            let selectedCardDivs = Array.from(document.getElementsByClassName("shownCards"));
+            for (let indexOfElement in selectedCardDivs) {
+                selectedCardDivs[indexOfElement].style.border = "1px white solid";
             }
             console.log("we have passed the get selection function");
             selection.length = 0;   
