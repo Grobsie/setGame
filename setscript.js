@@ -115,9 +115,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 match++;
             }
         }
-        //return (match === 4);
+        return (match === 4);
         //for testing purposes every selection is a match
-        return true;
+        //return true;
     }
 
     function combinations(cards) {
