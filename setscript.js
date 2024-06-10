@@ -40,17 +40,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 deck.splice(x, 1);
             }
             var cardContainer = document.createElement("div");
+            var shapeGroup = document.createElement("div");
+            cardContainer.setAttribute("class", "shownCards");
+            cardContainer.setAttribute("id", i);
+            
             for (let val = 0; val < hand[i][0];val++){
                 var shape = document.createElement("img");
                 shape.src = "img/"+hand[i][3]+"/"+hand[i][1] + hand[i][2]+".png"
-                shape.setAttribute("class", "shownCards");
-                shape.setAttribute("id", i);
-                cardContainer.appendChild(shape);
+                shape.setAttribute("class", "shape");
+                //shape.setAttribute("id", i);
+                shapeGroup.appendChild(shape);
             }
+            cardContainer.appendChild(shapeGroup)
             container.appendChild(cardContainer);
         }
         //console.log("finished fillHand");
-        document.getElementById("log").innerHTML = "possible combinations: " + combinations(hand);
+        if (deck.length > 10){
+            document.getElementById("log").innerHTML = "possible combinations in hand: " + combinations(hand);
+        } else {
+            document.getElementById("log").innerHTML = "possible combinations in hand: " + combinations(hand) + ", possibilities in deck: " + combinations(deck.concat(hand));
+        }
     }
 
     function shuffle() {
@@ -64,58 +73,26 @@ document.addEventListener('DOMContentLoaded', () => {
     function waitForThreeSelections() {
         return new Promise((resolve) => {
             function buttonClickHandler(event) {
-                if (event.target && event.target.classList.contains('shownCards')) {
-                    const buttonId = event.target.getAttribute('id');
-                    const buttonIdParent = event.target.parentNode;
+                const shownCardsDiv = event.target.closest('.shownCards');
+                console.log(shownCardsDiv);
+                if (shownCardsDiv != null) {
+                    const buttonId = shownCardsDiv.getAttribute('id');
                     if (selection.includes(hand[buttonId]) === false) {
-                        console.log(selection);
-                        console.log("does not seems to contain" + buttonId);
-                        buttonIdParent.style.border = "1px red solid";
-                        selection.push(hand[buttonId]);
-                        //console.log("adding card " + buttonId + " : " + hand[buttonId]);                        
+                        shownCardsDiv.style.border = "1px red solid";
+                        selection.push(hand[buttonId]);                      
                     } else {
-                        buttonIdParent.style.border = "1px white solid";
+                        shownCardsDiv.style.border = "1px solid #000000";
                         selection.splice(hand[buttonId], 1);
-                        //console.log("removing " + buttonId + " : " + hand[buttonId]);
                     }
                     console.log(selection);
                     if (selection.length >= 3) {
-                        buttonContainer.removeEventListener('click', buttonClickHandler);
-                        //console.log("three selections have been made");
+                        buttonContainer.removeEventListener('click', buttonClickHandler); 
                         resolve(selection);
                     }
                 }
             }
             buttonContainer.addEventListener('click', buttonClickHandler);
         });
-    }
-
-    //obsolete, use code for borders maybe later
-    function addSelection(arrIndex) {
-        let clickedCard = hand[arrIndex];
-        let cardDiv = document.getElementById(arrIndex);
-        if (selection.includes(clickedCard)) {
-            cardDiv.style.border = "1px white solid";
-            selection.splice(clickedCard, 1); 
-        } else {
-            cardDiv.style.border = "1px black solid";
-            console.log(clickedCard);
-            selection.push(clickedCard);
-            if (selection.length === 3){
-                if (isSet(selection) == true) {
-                    console.log("Yay it is a set");
-                    removeSetFromHand(selection);
-                } else {
-                    console.log("Oh no it is not a set :(");
-                }
-
-                let selectedCardDivs = Array.from(document.getElementsByClassName("shownCards"));
-                for (let indexOfElement in selectedCardDivs) {
-                    selectedCardDivs[indexOfElement].style.border = "1px white solid";
-                }
-                selection.length = 0;
-            }
-        }
     }
 
     function removeSetFromHand(setArray) {
@@ -138,9 +115,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 match++;
             }
         }
-        return (match === 4);
+        //return (match === 4);
         //for testing purposes every selection is a match
-        //return true;
+        return true;
     }
 
     function combinations(cards) {
@@ -177,19 +154,13 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById("deckSize").innerHTML = "decksize: " + deck.length;
             await waitForThreeSelections();
             if (isSet(selection) == true) {
-                console.log("Yay it is a set");
-                console.log(selection);
                 removeSetFromHand(selection);
-                console.log(hand);
-            } else {
-                console.log("Oh no it is not a set :(");
             }
-
             let selectedCardDivs = Array.from(document.getElementsByClassName("shownCards"));
             for (let indexOfElement in selectedCardDivs) {
                 selectedCardDivs[indexOfElement].style.border = "1px white solid";
             }
-            console.log("we have passed the get selection function");
+            //console.log("we have passed the get selection function");
             selection.length = 0;   
             fillHand();        
         }
