@@ -24,6 +24,10 @@
   background-color: blue;
 }
 
+#navigationPane {
+  align-items: center;
+}
+
 #handPane {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

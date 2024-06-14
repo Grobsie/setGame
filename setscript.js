@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (shownCardsDiv != null) {
                     const buttonId = shownCardsDiv.getAttribute('id');
                     if (selection.includes(hand[buttonId]) === false) {
-                        shownCardsDiv.style.border = "1px red solid";
+                        shownCardsDiv.style.border = "2px red solid";
                         selection.push(hand[buttonId]);                      
                     } else {
                         shownCardsDiv.style.border = "1px solid #000000";
