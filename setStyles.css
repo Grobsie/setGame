@@ -1,28 +1,64 @@
-.circle {
-    height: 50px;
-    width: 50px;
-    background-image: linear-gradient(45deg, black 25%, white 25%, white 50%, black 50%, black 75%, white 75%, white 100%);    
-    border-style: solid;
-    border-radius: 50%;
-}
+* {
+  font-size: 100%;
+  font-family: Verdana, sans-serif;;
+ }
+ /* The sidebar menu */
+ .sidenav {
+   height: 100%; /* Full-height: remove this if you want "auto" height */
+   width: 130px; /* Set the width of the sidebar */
+   position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+   z-index: 1; /* Stay on top */
+   top: 0; /* Stay at the top */
+   left: 0;
+   background-color: rgb(85, 98, 108); 
+   overflow-x: hidden; /* Disable horizontal scroll */
+ 
+   font-family: "Verdana";
+   color: white;
+ }
+ 
+ /* The navigation menu links */
+ .sidenav a {
+ 
+   text-decoration: none;
+   color: white;
+   display: block;
+ }
+ 
+ .sidenav h1 {
+   padding-top: 6px;
+ }
+ 
+ .sidenav h2 {
+   padding-left: 20px;
+ 
+ }
+ /* When you mouse over the navigation links, change their color */
+ .sidenav a:hover {
+   color: #111;
+ }
+ 
+ /* Style page content */
+ .header {
+   margin-top: 30px;
+   margin-left: 130px; /* Same as the width of the sidebar */
+ }
+ .main {
+   margin-top: 30px;
+   margin-left: 130px; /* Same as the width of the sidebar */
+ }
+ 
+ /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+ @media screen {
+   .sidenav {padding-top: 15px;}
+   .sidenav a {font-size: 18px;}
+   table {width: 100%;}
+ }
 
-.square {
-  height: 50px;
-  width: 50px;
-  border-style: solid;
-}
-
-.triangle {
-	width: 0;
-	height: 0;
-	border-left: 25px solid transparent;
-	border-right: 25px solid transparent;
-	border-bottom: 50px solid rgb(95, 120, 95);
-}
-
-.stripes {
-  background-color: blue;
-}
+ #SetMain {
+ margin-top: 30px;
+ margin-left: 130px; /* Same as the width of the sidebar */
+ }
 
 #navigationPane {
   align-items: center;
